@@ -26,6 +26,12 @@ extern GPIO_PORT_PIN_config GPIO_configParam [Configuration_NUM]  ;  // exist in
 
 void GPIO_init(void)
 {
+#if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
+SET_BIT(SFIOR,PUD);
+#elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
+CLEAR_BIT(SFIOR,PUD);
+#endif
+
 	for(uint8 it = 0 ; it < Configuration_NUM ; it++)
 	{
 		if(GPIO_configParam[it].PORT_Selected >= NUM_PORT  || GPIO_configParam[it].PIN_SELECT > NUM_FOR_PINS_PER_PORT)

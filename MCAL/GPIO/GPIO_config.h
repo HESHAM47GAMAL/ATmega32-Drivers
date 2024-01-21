@@ -17,6 +17,15 @@
 /**************************                   INCLUDES                   **************************/
 #include "GPIO_interface.h"
 
+/*
+0 -> Enable pull up resistor
+1 -> Disable pull up resistor
+*/
+#define PUD     2  //bit in register SFIOR responsible for control all internal pullup resistor 
+
+#define Enable_PullUp_resistor      1
+#define Disable_PullUp_resistor     0
+#define Param_Disable_All_PULLUP_resistor     Enable_PullUp_resistor
 
 /**************************                   Definitions macro                   **************************/
 #define Configuration_NUM 				2
