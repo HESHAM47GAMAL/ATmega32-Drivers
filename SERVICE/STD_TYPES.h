@@ -44,4 +44,24 @@ typedef float               float32;
 typedef double              float64;
 
 
+
+typedef unsigned char Byte ;
+
+typedef union 
+{
+    Byte Data;
+    struct 
+    {
+        Byte BIT0 : 1 ;
+        Byte BIT1 : 1 ;
+        Byte BIT2 : 1 ;
+        Byte BIT3 : 1 ;
+        Byte BIT4 : 1 ;
+        Byte BIT5 : 1 ; 
+        Byte BIT6 : 1 ;
+        Byte BIT7 : 1 ;
+    }Bits;
+
+}Reg_8Bits;
+
 #endif
