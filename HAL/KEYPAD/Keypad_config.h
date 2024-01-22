@@ -36,7 +36,7 @@
 
 
 /***  Choose port that will connected to keypad***/
-#define PORT_FOR_KEYPAD         PORTB_ID
+#define PORT_FOR_KEYPAD         PORTA_ID
 
 /***  choose first pin from cols lines of keypad will connect to MCU***/
 #define KEYPAD_FIRST_PIN_ROW_ID         PIN0_ID
@@ -56,7 +56,7 @@
 
 
 /*** here can control if i want to wait until pressed button release before return value ***/
-#define WAIT_BEFORE_RETURN_PRESSED_KEY          TRUE  //(TRUE , FALSE)
+#define WAIT_BEFORE_RETURN_PRESSED_KEY          False  //(TRUE , FALSE)
 
 
 
@@ -88,6 +88,7 @@ static uint8 Keypad_4X4_AdjustKeyNumber(uint8 Button_Number); // static that no 
 
 /**************************                   Functions Definition                   **************************/
 
+#if(KEYPAD_COL_NUM == 3)
 
 static uint8 Keypad_4X3_AdjustKeyNumber(uint8 Button_Number)
 {
@@ -113,7 +114,7 @@ static uint8 Keypad_4X3_AdjustKeyNumber(uint8 Button_Number)
     return pressed_key;
 }
 
-
+#elif(KEYPAD_COL_NUM == 4)
 
 static uint8 Keypad_4X4_AdjustKeyNumber(uint8 Button_Number)
 {
@@ -175,6 +176,8 @@ static uint8 Keypad_4X4_AdjustKeyNumber(uint8 Button_Number)
     }
     return pressed_key;
 }
+
+#endif
 
 
 #endif 

@@ -39,13 +39,9 @@ void Keypad_init(void)
     {
         GPIO_SetPinDirection(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + it , OUTPUT_PIN );
         #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
-
-        GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_ROW_ID + it , LOGIC_HIGH ); // set all columns to High
-
+            GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + it , LOGIC_HIGH ); // set all columns to High
         #elif  (KEYPAD_PRESSED_STATE == LOGIC_HIGH)
-
-        GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_ROW_ID + it , LOGIC_LOW ); // set all columns to low
-
+            GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + it , LOGIC_LOW ); // set all columns to low
         #endif
     }
 }
@@ -53,6 +49,16 @@ void Keypad_init(void)
 
 uint8 Keypad_GetPressedKey(void)
 {
+    for(uint8 it = 0 ; it < KEYPAD_COL_NUM ; it++)
+    {
+        // set  one column with value want to read to loop in rows to read which key from this column pressed
+        #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
+            GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + it , LOGIC_HIGH ); // set all columns to High
+        #elif  (KEYPAD_PRESSED_STATE == LOGIC_HIGH)
+            GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + it , LOGIC_LOW ); // set all columns to low
+        #endif
+    }
+    
     while(1)
     {
         uint8 col , row, pressed_key;
@@ -60,9 +66,9 @@ uint8 Keypad_GetPressedKey(void)
         {
             // set  one column with value want to read to loop in rows to read which key from this column pressed
             #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
-                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + col , LOGIC_LOW ); // set all columns to High
+                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + col , LOGIC_LOW ); // set one of columns to low
             #elif  (KEYPAD_PRESSED_STATE == LOGIC_HIGH)
-                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + col , LOGIC_HIGH ); // set all columns to low
+                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + col , LOGIC_HIGH ); // set one of columns to high
             #endif
 
             for(row = 0 ; row < KEYPAD_ROW_NUM ; row++)
@@ -78,7 +84,8 @@ uint8 Keypad_GetPressedKey(void)
                         while(GPIO_ReadPin(PORT_FOR_KEYPAD,KEYPAD_FIRST_PIN_ROW_ID + row) == KEYPAD_PRESSED_STATE); //wait until pressed key released
                     #endif
 
-                    break ; /// to stop search again for any button pressed as actually there are button pressed but to retreive changes happen before return to avoid any mistakes in next get value of kypad
+                    return pressed_key ;
+                   
                 }         //          |
             }             //          |                
                           //          |     I mean this step
@@ -86,12 +93,11 @@ uint8 Keypad_GetPressedKey(void)
                           //          \/            
             // retrive change happen to make same thing to next column
             #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
-                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_ROW_ID + col , LOGIC_HIGH ); // set all columns to High
+                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + col , LOGIC_HIGH ); // set all columns to High
             #elif  (KEYPAD_PRESSED_STATE == LOGIC_HIGH)
-                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_ROW_ID + col , LOGIC_LOW ); // set all columns to low
+                GPIO_WritePin(PORT_FOR_KEYPAD , KEYPAD_FIRST_PIN_COL_ID + col , LOGIC_LOW ); // set all columns to low
             #endif
 
-            return pressed_key ;
         }
     }
 

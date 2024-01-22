@@ -29,10 +29,8 @@ extern GPIO_PORT_PIN_config GPIO_configParam [Configuration_NUM]  ;  // exist in
 
 void GPIO_init(void)
 {
-#if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
-SET_BIT(SFIOR,PUD);
-#elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
-CLEAR_BIT(SFIOR,PUD);
+#if (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
+	SET_BIT(SFIOR,PUD);
 #endif
 	for(uint8 it = 0 ; it < Configuration_NUM ; it++)
 	{
@@ -53,10 +51,9 @@ CLEAR_BIT(SFIOR,PUD);
 
 void GPIO_SetPinDirection(uint8 PORTX , uint8 PIN ,GPIO_PinDirectionTypes PinDirction )
 {
-#if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
-SET_BIT(SFIOR,PUD);
-#elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
-CLEAR_BIT(SFIOR,PUD);
+
+#if (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
+	SET_BIT(SFIOR,PUD);
 #endif
 	if(PORTX >= NUM_PORT  || PIN >= NUM_FOR_PINS_PER_PORT)
 	{
@@ -235,11 +232,10 @@ void GPIO_WritePin(uint8 PORTX , uint8 PIN ,uint8 value)
 
 void GPIO_SetPortDirection(uint8 PORTX , GPIO_PortDirectionTypes PortDirection)
 {
-#if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
-SET_BIT(SFIOR,PUD);
-#elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
-CLEAR_BIT(SFIOR,PUD);
+#if (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
+	SET_BIT(SFIOR,PUD);
 #endif
+
 	if(PORTX >= NUM_PORT)
 	{
 		/** Do Nothing **/
