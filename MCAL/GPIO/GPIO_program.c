@@ -23,6 +23,10 @@
 // Here write all configuration you want for pins
 extern GPIO_PORT_PIN_config GPIO_configParam [Configuration_NUM]  ;  // exist in GPIO_config.h
 
+
+/**************************                   Functions Definition                   **************************/
+
+
 void GPIO_init(void)
 {
 #if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)

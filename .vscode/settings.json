@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "keypad_config.h": "c"
+        "keypad_config.h": "c",
+        "keypad_interface.h": "c"
     }
 }

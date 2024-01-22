@@ -19,6 +19,16 @@
 
 /**************************                   Function Declaration                   **************************/
 
+/*
+*   @brief : this function used to initialize port that will be connected to keypad
+*   @args  : void
+*   @return: void
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void Keypad_init(void);
+
+
 
 /*
 *   @brief : this function used to return value if pressed key (⛔Note that will stay at this function until key pressed)

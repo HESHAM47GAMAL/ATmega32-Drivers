@@ -14,7 +14,7 @@
 #define KEYPAD_H_
 
 /**************************                   INCLUDES                   **************************/
-#include <../../MCAL/GPIO/GPIO_interface.h>
+#include "../../MCAL/GPIO/GPIO_interface.h"
 
 
 //                                          |----> some time not exist
@@ -25,6 +25,9 @@
 //                |      r2
 //                |      r3
 //                 - 
+
+
+
 
 /**************************                   Definitions macro                   **************************/
 
@@ -41,12 +44,137 @@
 #define KEYPAD_FIRST_PIN_COL_ID         PIN4_ID    
 
 /*** state that I will read in pin when press button from keypad ***/
-#define KEYPAD_PRESSED_STATE            LOGIC_LOW   //(LOGIC_HIGH , LOGIC_LOW)
+#define KEYPAD_PRESSED_STATE            LOGIC_LOW   //(LOGIC_HIGH , LOGIC_LOW)   
+//                             |
+//                             |
+//           ------------------ -------------------
+//          |                                      |
+//          |(Logic low)                           |(logic high)   
+//          |                                      |
+//          \/                                     \/
+// activate pullup resistor                        need extenal pull down resistor (👀 don't miss)
 
 
 /*** here can control if i want to wait until pressed button release before return value ***/
 #define WAIT_BEFORE_RETURN_PRESSED_KEY          TRUE  //(TRUE , FALSE)
 
+
+
+/**************************                   Macros like function   & Function Declare                **************************/
+#if(KEYPAD_COL_NUM == 3)
+
+/*
+*   @brief : this function used map pressed button to value of button for keypad matrex size    4*3
+*   @args  : key number that pressed
+*   @return: value of key pressed after mapping
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+static uint8 Keypad_4X3_AdjustKeyNumber(uint8 Button_Number); // static that no another module will use it 
+
+#elif(KEYPAD_COL_NUM == 4)
+
+/*
+*   @brief : this function used map pressed button to value of button for keypad matrex size    4*4
+*   @args  : key number that pressed
+*   @return: value of key pressed after mapping
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+static uint8 Keypad_4X4_AdjustKeyNumber(uint8 Button_Number); // static that no another module will use it 
+
+#endif
+
+
+/**************************                   Functions Definition                   **************************/
+
+
+static uint8 Keypad_4X3_AdjustKeyNumber(uint8 Button_Number)
+{
+    uint8 pressed_key = 0;
+    switch (Button_Number)
+    {
+        case 10 :
+            pressed_key = '*';
+            break;
+
+        case 11 : 
+            pressed_key = 0;
+            break;
+
+        case 12 : 
+            pressed_key = '#';
+            break;
+
+        default :
+            pressed_key = Button_Number;   // if Button_Number =1  --> so will return 1 (as no mapping need like case 10 , 11 , 12)
+            break;
+    }
+    return pressed_key;
+}
+
+
+
+static uint8 Keypad_4X4_AdjustKeyNumber(uint8 Button_Number)
+{
+    uint8 pressed_key = 0;
+    switch(Button_Number)
+    {
+        case 1 : pressed_key = 1;
+            break;
+        
+        case 2 : pressed_key = 2;
+            break;
+
+        case 3 : pressed_key = 3 ;
+            break;
+
+        case 4 : pressed_key = 'A';
+            break;
+
+        case 5 : pressed_key = 4 ;
+            break ;
+
+        case 6 : pressed_key = 5 ;
+            break ;
+
+        case 7 : pressed_key = 6 ;
+            break;
+
+        case 8 : pressed_key = 'B';
+            break ;
+
+        case 9 : pressed_key = 7;
+            break ;
+
+        case 10 : pressed_key = 8 ;
+            break ;
+
+        case 11 : pressed_key = 9 ; 
+            break ;
+
+        case 12 : pressed_key = 'C';
+            break ;
+
+        case 13 : pressed_key = '*';
+            break; 
+
+        case 14 : pressed_key = 0 ;
+            break ;
+
+        case 15 : pressed_key = '#';
+            break ;
+
+        case 16 : pressed_key = 'D';
+            break;
+
+
+        default : /* Do Nothing */
+            break  ;
+
+    }
+    return pressed_key;
+}
 
 
 #endif 
