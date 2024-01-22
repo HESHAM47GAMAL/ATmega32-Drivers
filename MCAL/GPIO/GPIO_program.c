@@ -23,7 +23,6 @@
 // Here write all configuration you want for pins
 extern GPIO_PORT_PIN_config GPIO_configParam [Configuration_NUM]  ;  // exist in GPIO_config.h
 
-
 void GPIO_init(void)
 {
 #if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
@@ -31,187 +30,108 @@ SET_BIT(SFIOR,PUD);
 #elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
 CLEAR_BIT(SFIOR,PUD);
 #endif
-
 	for(uint8 it = 0 ; it < Configuration_NUM ; it++)
 	{
-		if(GPIO_configParam[it].PORT_Selected >= NUM_PORT  || GPIO_configParam[it].PIN_SELECT > NUM_FOR_PINS_PER_PORT)
+		if(GPIO_configParam[it].PIN_SELECT == PINS_ALL) // configure all port
 		{
-			/* Do Nothing*/
+			GPIO_SetPortDirection(GPIO_configParam[it].PORT_Selected , GPIO_configParam[it].INPUT_OUTPUT);
 		}
-		else
+		else  // configure pin from port
 		{
-			switch(GPIO_configParam[it].PORT_Selected)
-			{
+			GPIO_SetPinDirection(GPIO_configParam[it].PORT_Selected , GPIO_configParam[it].PIN_SELECT , GPIO_configParam[it].INPUT_OUTPUT);
+		}
+	}
 
+}
+
+
+
+
+void GPIO_SetPinDirection(uint8 PORTX , uint8 PIN ,GPIO_PinDirectionTypes PinDirction )
+{
+#if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
+SET_BIT(SFIOR,PUD);
+#elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
+CLEAR_BIT(SFIOR,PUD);
+#endif
+	if(PORTX >= NUM_PORT  || PIN >= NUM_FOR_PINS_PER_PORT)
+	{
+		/* Do nothing */
+	}
+	else
+	{
+		switch(PORTX)
+		{
 			case PORTA_ID :
-				if(GPIO_configParam[it].PIN_SELECT == PINS_ALL) // configure all port
+				if(PinDirction == INPUT_PIN)
 				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT)
-					{
-						DDRA = ZEROS_WORD ; // set port input
-						PORTA = ZEROS_WORD ; //disable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT_PULLUP)
-					{
-						DDRA = ZEROS_WORD ;// set port input
-						PORTA = ONES_WORD ; //enable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PORT )
-					{
-						DDRA = ONES_WORD ;
-					}
+					CLEAR_BIT( DDRA , PIN );
+					CLEAR_BIT( PORTA ,PIN );
 				}
-				else // configure pin from port
+				else if(PinDirction == INPUT_PIN_PULLUP)
 				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN)
-					{
-						CLEAR_BIT( DDRA , GPIO_configParam[it].PIN_SELECT );
-						CLEAR_BIT( PORTA , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN_PULLUP)
-					{
-						CLEAR_BIT( DDRA , GPIO_configParam[it].PIN_SELECT );
-						SET_BIT( PORTA , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PIN)
-					{
-						SET_BIT( DDRA , GPIO_configParam[it].PIN_SELECT );
-					}
+					CLEAR_BIT( DDRA , PIN );
+					SET_BIT( PORTA , PIN );
 				}
-
-				break ;
-
-
-
-			case PORTB_ID :
-				if(GPIO_configParam[it].PIN_SELECT == PINS_ALL) // configure all port
+				else if(PinDirction == OUTPUT_PIN)
 				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT)
-					{
-						DDRB = ZEROS_WORD ; // set port input
-						PORTB = ZEROS_WORD ; //disable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT_PULLUP)
-					{
-						DDRB = ZEROS_WORD ;// set port input
-						PORTB = ONES_WORD ; //enable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PORT )
-					{
-						DDRB = ONES_WORD ;
-					}
+					SET_BIT( DDRA , PIN );
 				}
-				else // configure pin from port
-				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN)
-					{
-						CLEAR_BIT( DDRB , GPIO_configParam[it].PIN_SELECT );
-						CLEAR_BIT( PORTB , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN_PULLUP)
-					{
-						CLEAR_BIT( DDRB , GPIO_configParam[it].PIN_SELECT );
-						SET_BIT( PORTB , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PIN)
-					{
-						SET_BIT( DDRB , GPIO_configParam[it].PIN_SELECT );
-					}
-				}
-
-				break ;
-
-
-
-			case PORTC_ID :
-				if(GPIO_configParam[it].PIN_SELECT == PINS_ALL) // configure all port
-				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT)
-					{
-						DDRC = ZEROS_WORD ; // set port input
-						PORTC = ZEROS_WORD ; //disable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT_PULLUP)
-					{
-						DDRC = ZEROS_WORD ;// set port input
-						PORTC = ONES_WORD ; //enable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PORT )
-					{
-						DDRC = ONES_WORD ;
-					}
-				}
-				else // configure pin from port
-				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN)
-					{
-						CLEAR_BIT( DDRC , GPIO_configParam[it].PIN_SELECT );
-						CLEAR_BIT( PORTC , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN_PULLUP)
-					{
-						CLEAR_BIT( DDRC , GPIO_configParam[it].PIN_SELECT );
-						SET_BIT( PORTC , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PIN)
-					{
-						SET_BIT( DDRC , GPIO_configParam[it].PIN_SELECT );
-					}
-				}
-
 				break;
 
+			case PORTB_ID :
+				if(PinDirction == INPUT_PIN)
+				{
+					CLEAR_BIT( DDRB , PIN );
+					CLEAR_BIT( PORTB ,PIN );
+				}
+				else if(PinDirction == INPUT_PIN_PULLUP)
+				{
+					CLEAR_BIT( DDRB , PIN );
+					SET_BIT( PORTB , PIN );
+				}
+				else if(PinDirction == OUTPUT_PIN)
+				{
+					SET_BIT( DDRB , PIN );
+				}
+				break;
 
+			case PORTC_ID :
+				if(PinDirction == INPUT_PIN)
+				{
+					CLEAR_BIT( DDRC , PIN );
+					CLEAR_BIT( PORTC ,PIN );
+				}
+				else if(PinDirction == INPUT_PIN_PULLUP)
+				{
+					CLEAR_BIT( DDRC , PIN );
+					SET_BIT( PORTC , PIN );
+				}
+				else if(PinDirction == OUTPUT_PIN)
+				{
+					SET_BIT( DDRC , PIN );
+				}
+				break;
 
 			case PORTD_ID :
-				if(GPIO_configParam[it].PIN_SELECT == PINS_ALL) // configure all port
+				if(PinDirction == INPUT_PIN)
 				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT)
-					{
-						DDRD = ZEROS_WORD ; // set port input
-						PORTD = ZEROS_WORD ; //disable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PORT_PULLUP)
-					{
-						DDRD = ZEROS_WORD ;// set port input
-						PORTD = ONES_WORD ; //enable pullup resistor
-
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PORT )
-					{
-						DDRD = ONES_WORD ;
-					}
+					CLEAR_BIT( DDRD , PIN );
+					CLEAR_BIT( PORTD ,PIN );
 				}
-				else // configure pin from port
+				else if(PinDirction == INPUT_PIN_PULLUP)
 				{
-					if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN)
-					{
-						CLEAR_BIT( DDRD , GPIO_configParam[it].PIN_SELECT );
-						CLEAR_BIT( PORTD , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == INPUT_PIN_PULLUP)
-					{
-						CLEAR_BIT( DDRD , GPIO_configParam[it].PIN_SELECT );
-						SET_BIT( PORTD , GPIO_configParam[it].PIN_SELECT );
-					}
-					else if(GPIO_configParam[it].INPUT_OUTPUT == OUTPUT_PIN)
-					{
-						SET_BIT( DDRD , GPIO_configParam[it].PIN_SELECT );
-					}
+					CLEAR_BIT( DDRD , PIN );
+					SET_BIT( PORTD , PIN );
 				}
-				break ;
-			}
+				else if(PinDirction == OUTPUT_PIN)
+				{
+					SET_BIT( DDRD , PIN );
+				}
+				break;
 		}
 	}
 }
-
 
 
 uint8 GPIO_ReadPin(uint8 PORTX , uint8 PIN )
@@ -308,6 +228,100 @@ void GPIO_WritePin(uint8 PORTX , uint8 PIN ,uint8 value)
     }
 }
 
+
+void GPIO_SetPortDirection(uint8 PORTX , GPIO_PortDirectionTypes PortDirection)
+{
+#if (Param_Disable_All_PULLUP_resistor == Enable_PullUp_resistor)
+SET_BIT(SFIOR,PUD);
+#elif (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
+CLEAR_BIT(SFIOR,PUD);
+#endif
+	if(PORTX >= NUM_PORT)
+	{
+		/** Do Nothing **/
+	}
+	else
+	{
+		switch(PORTX)
+		{
+			case PORTA_ID :
+					if(PortDirection == INPUT_PORT)
+					{
+						DDRA = ZEROS_WORD ; // set port input
+						PORTA = ZEROS_WORD ; //disable pullup resistor
+
+					}
+					else if(PortDirection == INPUT_PORT_PULLUP)
+					{
+						DDRA = ZEROS_WORD ;// set port input
+						PORTA = ONES_WORD ; //enable pullup resistor
+
+					}
+					else if(PortDirection == OUTPUT_PORT )
+					{
+						DDRA = ONES_WORD ;
+					}
+					break;
+
+			case PORTB_ID :
+					if(PortDirection == INPUT_PORT)
+					{
+						DDRB = ZEROS_WORD ; // set port input
+						PORTB = ZEROS_WORD ; //disable pullup resistor
+
+					}
+					else if(PortDirection == INPUT_PORT_PULLUP)
+					{
+						DDRB = ZEROS_WORD ;// set port input
+						PORTB = ONES_WORD ; //enable pullup resistor
+
+					}
+					else if(PortDirection == OUTPUT_PORT )
+					{
+						DDRB = ONES_WORD ;
+					}
+					break;
+
+			case PORTC_ID :
+					if(PortDirection == INPUT_PORT)
+					{
+						DDRC = ZEROS_WORD ; // set port input
+						PORTC = ZEROS_WORD ; //disable pullup resistor
+
+					}
+					else if(PortDirection == INPUT_PORT_PULLUP)
+					{
+						DDRC = ZEROS_WORD ;// set port input
+						PORTC = ONES_WORD ; //enable pullup resistor
+
+					}
+					else if(PortDirection == OUTPUT_PORT )
+					{
+						DDRC = ONES_WORD ;
+					}
+					break;
+
+			case PORTD_ID :
+					if(PortDirection == INPUT_PORT)
+					{
+						DDRD = ZEROS_WORD ; // set port input
+						PORTD = ZEROS_WORD ; //disable pullup resistor
+
+					}
+					else if(PortDirection == INPUT_PORT_PULLUP)
+					{
+						DDRD = ZEROS_WORD ;// set port input
+						PORTD = ONES_WORD ; //enable pullup resistor
+
+					}
+					else if(PortDirection == OUTPUT_PORT )
+					{
+						DDRD = ONES_WORD ;
+					}
+					break;
+		}
+	}
+}
 
 
 uint8 GPIO_ReadPort(uint8 PORTX)

@@ -80,14 +80,29 @@ typedef  struct
 }GPIO_PORT_PIN_config;
 
 
+
+
+/**************************                   Function Declaration                   **************************/
+
 /*
-*   @brief : this function used to initailize pins for GPIO at first using GPIO_config.h as contain pins configuration (used once @first)
+*   @brief : this function used to initailize Pins or Ports for GPIO at first using GPIO_config.h as contain pins configuration (used once @first)
 *   @args  : void
 *   @return: no return
 *   @synchronous / Asynchronous : Synchronous
 *   @ Reentrant / Non Reentrant : Reentrant
 */
 void GPIO_init(void);
+
+/*
+*   @brief : this function used to initailize pins for GPIO that will used by another Modules
+*   @arg1  PORTX: Port number
+*   @arg2  PIN: Pin number
+*   @arg3  PinDirction: Pin direction
+*   @return: no return
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void GPIO_SetPinDirection(uint8 PORTX , uint8 PIN ,GPIO_PinDirectionTypes PinDirction );
 
 /*
 *   @brief : this function used to read value of pin from port
@@ -109,6 +124,16 @@ uint8 GPIO_ReadPin(uint8 PORTX , uint8 PIN );
 *   @ Reentrant / Non Reentrant : Reentrant
 */
 void GPIO_WritePin(uint8 PORTX , uint8 PIN ,uint8 value);
+
+/*
+*   @brief : this function used to initailize Port for GPIO that will used by another Modules
+*   @arg1  PORTX: Port number
+*   @arg2  PortDirection:  port direction
+*   @return: no return
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void GPIO_SetPortDirection(uint8 PORTX , GPIO_PortDirectionTypes PortDirection);
 
 /*
 *   @brief : this function used to read port 
