@@ -3,6 +3,7 @@
 - [Description](#Description)
 
 - [HAL](#HAL)
+  - [Keypad](#Keypad)
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
 - [Service](#Service)
@@ -19,6 +20,9 @@
 
 ## HAL
 <p>Here will find all Drivers for external hardware devices that ready to use with ATmega32</p>
+
+### Keypad
+<p>Here will find driver for this module and able to config with keypad 4*4 or 4*3 </p>
 
 
 ## MCAL
