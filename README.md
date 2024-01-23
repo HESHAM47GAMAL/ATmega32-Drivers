@@ -4,6 +4,7 @@
 
 - [HAL](#HAL)
   - [Keypad](#Keypad)
+  - [LCD](#LCD)
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
 - [Service](#Service)
@@ -23,6 +24,9 @@
 
 ### Keypad
 <p>Here will find driver for this module and able to config with keypad 4*4 or 4*3 </p>
+
+### LCD
+<p>Here will implementation for LCD LM016L 2*16 and find most of features and add New character to CGRAM</p>
 
 
 ## MCAL
