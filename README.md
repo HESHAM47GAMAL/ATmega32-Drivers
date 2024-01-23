@@ -1,7 +1,7 @@
 # ATmega32 Drivers implementation
 
 - [Description](#Description)
-
+- [Note⛔](#Note⛔)
 - [HAL](#HAL)
   - [Keypad](#Keypad)
   - [LCD](#LCD)
@@ -18,6 +18,9 @@
 <p>1.modularity</p>
 <p>2.save hierarchy</p>
 <p>3.easy configurability</p>
+
+## Note⛔
+<p>Don't forget for any module Driver go to ModuleName_config.h and read it carefully and edit or configure depend on your need</p>
 
 ## HAL
 <p>Here will find all Drivers for external hardware devices that ready to use with ATmega32</p>
