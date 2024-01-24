@@ -21,8 +21,6 @@
 
 ## Note⛔
 <p>Don't forget for any module Driver go to ModuleName_config.h and read it carefully and edit or configure depend on your need</p>
-<p>Read ModuleName_interface.h to know each function what can do and what can't Do</p>
-<p>Don't Ignore any Note ⛔🙆‍♂️ in ModuleName_interface.h OR ModuleName_config.h</p>
 
 ## HAL
 <p>Here will find all Drivers for external hardware devices that ready to use with ATmega32</p>
