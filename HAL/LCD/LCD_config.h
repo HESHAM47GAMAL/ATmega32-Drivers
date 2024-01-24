@@ -40,7 +40,7 @@
 #define LCD_8_BIT_MODE              0       //      option1         ---
 #define LCD_4_BIT_MODE              1       //      option2         ---        
 //                                                                     | Here    
-#define LCD_BITS_MODE               LCD_4_BIT_MODE      //          <--
+#define LCD_BITS_MODE               LCD_8_BIT_MODE      //          <--
 
 #if( (LCD_BITS_MODE != LCD_4_BIT_MODE) && (LCD_BITS_MODE != LCD_8_BIT_MODE) )
     #error "Number of Data bits should be equal to 4 or 8   Give more attension :("

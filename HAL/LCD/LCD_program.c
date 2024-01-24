@@ -14,10 +14,20 @@
 #include "LCD_config.h"
 #include "LCD_interface.h"
 #include "../../MCAL/GPIO/GPIO_interface.h"
+ #include <stdlib.h>
+ #include <string.h>
+
 #include <util/delay.h>
 
-/**************************                   Function Implementation                   **************************/
+/**************************                   Static Variables                  **************************/
 
+
+static uint8 row_global = 0 ;
+static uint8 col_global = 0 ;
+
+
+
+/**************************                   Function Implementation                   **************************/
 
 void LCD_init(void)
 {
@@ -158,6 +168,12 @@ void LCD_DisplayCharacter(uint8 char_value)
     GPIO_WritePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
     _delay_ms(1); /* delay for processing Th = 13ns */
 
+    col_global++;
+    if(col_global == 16)
+    {
+        row_global = 1 ;
+        col_global = 0 ;
+    }
 }
 
 
@@ -181,10 +197,14 @@ void LCD_MoveCursor(uint8 row , uint8 col)
     {
         case 0 : 
             New_Location = col ;
+            col_global = col ;
+            row_global = 0 ;
             break ;
         
         case 1 :
             New_Location = col + 0x40 ;
+            col_global = col ;
+            row_global = 1 ;
             break;
 
         case 2 :
@@ -210,6 +230,7 @@ void LCD_DisplayStringRowCol(const uint8 * str_content , uint8 row , uint8 col)
 
 void LCD_ClearScreen(void)
 {
+    col_global = 0 , row_global = 0;
     LCD_SendCommand(LCD_CLEAR_DISPLAY);
 }
 
@@ -217,11 +238,83 @@ void LCD_ClearScreen(void)
 
 void LCD_MoveCursorRight(void)
 {
-    LCD_SendCommand(LCD_CURSOR_MOVE_RIGHT);
+    
+    if(col_global == 15 && row_global == 0 )
+    {
+        col_global = 0 , row_global = 1 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == 15 && row_global == 1 )
+    {
+        col_global = 0 , row_global = 0 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else{ // safe shift right no problem
+        LCD_SendCommand(LCD_CURSOR_MOVE_RIGHT);
+        col_global++;
+    }
 }
 
 
 void LCD_MoveCursorLeft(void)
 {
-    LCD_SendCommand(LCD_CURSOR_MOVE_LEFT);
+    if(col_global == 0 && row_global == 0)
+    {
+        col_global = 15 , row_global = 1 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == 0 && row_global == 1)
+    {
+        col_global = 15 , row_global = 0 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else
+    {
+        LCD_SendCommand(LCD_CURSOR_MOVE_LEFT);
+        col_global--;
+    }
+    
+}
+
+
+void LCD_ShitEntireDisplayRight(void)
+{
+    LCD_SendCommand(LCD_ENTIRE_DISPLAY_RIGHT);
+}
+
+void LCD_ShitEntireDisplayLeft(void)
+{
+    LCD_SendCommand(LCD_ENTIRE_DISPLAY_LEFT);
+}
+
+
+void LCD_GenerateCharacterCGRAM(const uint8 * Custom_character , uint8 location)
+{
+    LCD_SendCommand(LCD_CGRAM_LOCATION + (location * 8) );
+    for(uint8 it = 0 ; it < 8 ;it++)
+    {
+        LCD_DisplayCharacter(Custom_character[it]);
+    }
+}
+
+
+void LCD_DisplayCustomCharacter(uint8 location)
+{
+    LCD_DisplayCharacter(location);
+}
+
+void LCD_DisplayCustomCharacterRowCol(uint8 location , uint8 row ,uint8 col)
+{
+    LCD_MoveCursor(row,col);
+    LCD_DisplayCharacter(location);
+}
+
+
+
+
+void LCD_intToString(uint32 data)
+{
+	 char string_buff[17];// I write char not sint8_t(signed char ) to avoid warning
+	 itoa(data , string_buff , 10); /* Use itoa C function to convert the data to its corresponding ASCII value, 10 for decimal */
+	 LCD_DisplayString( (uint8_t *)string_buff);
 }
