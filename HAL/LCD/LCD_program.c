@@ -14,8 +14,8 @@
 #include "LCD_config.h"
 #include "LCD_interface.h"
 #include "../../MCAL/GPIO/GPIO_interface.h"
- #include <stdlib.h>
- #include <string.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <util/delay.h>
 
@@ -314,7 +314,7 @@ void LCD_DisplayCustomCharacterRowCol(uint8 location , uint8 row ,uint8 col)
 
 void LCD_intToString(uint32 data)
 {
-	 char string_buff[17];// I write char not sint8_t(signed char ) to avoid warning
+	 uint8 string_buff[17];// I write char not sint8_t(signed char ) to avoid warning
 	 itoa(data , string_buff , 10); /* Use itoa C function to convert the data to its corresponding ASCII value, 10 for decimal */
 	 LCD_DisplayString( (uint8_t *)string_buff);
 }

@@ -88,6 +88,9 @@ static uint8 Keypad_4X4_AdjustKeyNumber(uint8 Button_Number); // static that no 
 
 /**************************                   Functions Definition                   **************************/
 
+/*  Note ⛔🙆‍♂️  Don't miss to edit what is character in ROW column in your Keypad    */
+
+
 #if(KEYPAD_COL_NUM == 3)
 
 static uint8 Keypad_4X3_AdjustKeyNumber(uint8 Button_Number)

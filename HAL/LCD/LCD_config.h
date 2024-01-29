@@ -53,8 +53,8 @@
 #endif
 
 #define CURSOR_OFF              0           //      option1         ---
-#define CURSOR_ON_NO_BLINK      1           //      option1         ---
-#define CURSOR_ON_BLINK         2           //      option1         ---
+#define CURSOR_ON_NO_BLINK      1           //      option2         ---
+#define CURSOR_ON_BLINK         2           //      option3         ---
 //                                                                     | Here   
 #define CURSOR_STATE        CURSOR_ON_NO_BLINK          //      <-------
 

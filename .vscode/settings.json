@@ -1,7 +1,11 @@
 {
   "files.associations": {
     "keypad_config.h": "c",
-    "keypad_interface.h": "c"
+    "keypad_interface.h": "c",
+    "adc_private.h": "c",
+    "adc_interface.h": "c",
+    "lm35_interface.h": "c",
+    "adc_config.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

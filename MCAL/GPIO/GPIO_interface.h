@@ -43,6 +43,9 @@
 #define ONES_WORD  0xFF
 
 
+#define PUD     2  //bit in register SFIOR responsible for control all internal pullup resistor 
+
+
 /**************************                   Type Declaration                   **************************/
 
 typedef enum
