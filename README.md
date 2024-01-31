@@ -9,6 +9,7 @@
   - [LM35](#LM35)
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
+  - [Timer0](#Timer0)
   - [ADC](#ADC)
 - [Service](#Service)
   - [Common-Macros](#Common-Macros)
@@ -24,7 +25,7 @@
 <p>3.easy configurability</p>
 
 ## Note⛔
-<p>Don't forget for any module Driver go to ModuleName_config.h and read it carefully and edit or configure depend on your need</p>
+<p>Don't forget for any module Driver go to ModuleName_config.h and read it carefully and edit or configure depend on your need and configure  ModuleName_config.c if exist </p>
 <p>Read ModuleName_interface.h to know each function what can do and what can't Do</p>
 <p>Don't Ignore any <Strong>Note ⛔🙆‍♂️</Strong> in ModuleName_interface.h OR ModuleName_config.h</p>
 
@@ -48,6 +49,9 @@
 
 ### GPIO
 <p>Here deal with Digital input / output for MCU  </p>
+
+### Timer0
+<p>Here will find implementation for Timer0 Module available with all modes 1.OVF(Polling & Interrupt) 2.CTC(Polling & Interrupt & waveform Generation) 3.Fast PWM  4.Phase correct PWM</p>
 
 ### ADC
 <p>Here will find implementation for ADC Module availble with 3 modes (Signle Conversion , Free Running , Auto Trigger)</p>

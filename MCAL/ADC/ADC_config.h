@@ -81,7 +81,7 @@ typedef struct
 #define REFRENCE_Volt_AVCC_OR_AREF_OR_internal  5
 
 /*  Choose between Enable and Disable ADC Interrupt     */
-#define ADC_Interrupt_Enable    1              //  Option 1 ------------
+#define ADC_Interrupt_Enable    1              //  Option 1 -----------|
 #define ADC_Interrupt_Disable   0              //  Option 2 -----------|  
 //                                                                     | Here
 #define ADC_Interrupt_State         ADC_Interrupt_Enable  //<----------

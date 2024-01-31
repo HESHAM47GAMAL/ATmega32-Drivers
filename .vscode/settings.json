@@ -5,7 +5,9 @@
     "adc_private.h": "c",
     "adc_interface.h": "c",
     "lm35_interface.h": "c",
-    "adc_config.h": "c"
+    "adc_config.h": "c",
+    "common_macros.h": "c",
+    "gpio_interface.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

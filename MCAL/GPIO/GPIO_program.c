@@ -230,6 +230,38 @@ void GPIO_WritePin(uint8 PORTX , uint8 PIN ,uint8 value)
 }
 
 
+void GPIO_TogglePin(uint8 PORTX , uint8 PIN )
+{
+if(PORTX >= NUM_PORT  || PIN >= NUM_FOR_PINS_PER_PORT)
+    {
+        /* Do Nothing*/
+    }
+    else
+    {
+        switch(PORTX)
+        {
+            case PORTA_ID :
+                TOGGLE_BIT(PORTA,PIN);
+                break;
+
+
+            case PORTB_ID :
+                TOGGLE_BIT(PORTB,PIN);
+                break;  
+
+            case PORTC_ID :
+                TOGGLE_BIT(PORTC,PIN);
+                break;
+
+            case PORTD_ID :
+                TOGGLE_BIT(PORTD,PIN);
+                break;
+
+        }
+    }
+
+}
+
 void GPIO_SetPortDirection(uint8 PORTX , GPIO_PortDirectionTypes PortDirection)
 {
 #if (Param_Disable_All_PULLUP_resistor == Disable_PullUp_resistor)
@@ -392,5 +424,35 @@ void GPIO_WritePort(uint8 PORTX  ,uint8 value)
     }
 }
 
+
+void GPIO_TogglePort(uint8 PORTX)
+{
+    if(PORTX >= NUM_PORT )
+    {
+        /* Do Nothing  */
+    }
+    else
+    {
+        switch(PORTX)
+        {
+            case PORTA_ID :
+                PORTA ^= 0xFF ;
+                break ;
+
+            case PORTB_ID :
+                PORTB ^= 0xFF ;
+                break ;
+
+
+            case PORTC_ID :
+                PORTC ^= 0xFF ;
+                break ;
+
+            case PORTD_ID :
+                PORTD ^= 0xFF ;
+                break ;
+        }
+    }	
+}
 
 

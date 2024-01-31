@@ -129,6 +129,16 @@ uint8 GPIO_ReadPin(uint8 PORTX , uint8 PIN );
 void GPIO_WritePin(uint8 PORTX , uint8 PIN ,uint8 value);
 
 /*
+*   @brief : this function used to Toggle value for pin from port
+*   @arg1  PORTX:Port want to write value from depend on pin
+*   @arg2  PIN: pin that will Toggle
+*   @return: no return 
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void GPIO_TogglePin(uint8 PORTX , uint8 PIN );
+
+/*
 *   @brief : this function used to initailize Port for GPIO that will used by another Modules
 *   @arg1  PORTX: Port number
 *   @arg2  PortDirection:  port direction
@@ -156,6 +166,15 @@ uint8 GPIO_ReadPort(uint8 PORTX);
 *   @ Reentrant / Non Reentrant : Reentrant
 */
 void GPIO_WritePort(uint8 PORTX  ,uint8 value);
+
+/*
+*   @brief : this function used to Toggle value for port
+*   @arg1  PORTX:Port want to toggle value for it
+*   @return: no return 
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void GPIO_TogglePort(uint8 PORTX);
 
 
 
