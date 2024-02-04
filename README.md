@@ -10,6 +10,7 @@
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
   - [Timer0](#Timer0)
+  - [Timer1](#Timer1)
   - [ADC](#ADC)
 - [Service](#Service)
   - [Common-Macros](#Common-Macros)
@@ -52,6 +53,9 @@
 
 ### Timer0
 <p>Here will find implementation for Timer0 Module available with all modes 1.OVF(Polling & Interrupt) 2.CTC(Polling & Interrupt & waveform Generation) 3.Fast PWM  4.Phase correct PWM</p>
+
+### Timer1
+<p>Here will find implementation for Timer0 Module available with all modes 1.OVF(Polling & Interrupt & ICU) 2.CTC(Polling & Interrupt & waveform Generation) 3.Fast PWM  4.Phase correct PWM</p>
 
 ### ADC
 <p>Here will find implementation for ADC Module availble with 3 modes (Signle Conversion , Free Running , Auto Trigger)</p>
