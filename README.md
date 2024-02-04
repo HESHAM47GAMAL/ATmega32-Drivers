@@ -9,6 +9,7 @@
   - [LM35](#LM35)
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
+  - [EXT-INT](#EXT-INT)
   - [Timer0](#Timer0)
   - [Timer1](#Timer1)
   - [ADC](#ADC)
@@ -50,6 +51,9 @@
 
 ### GPIO
 <p>Here deal with Digital input / output for MCU  </p>
+
+### EXT-INT
+<p>Here will find implementation of INT0 , INT1 and INT2 with full configuration </p>
 
 ### Timer0
 <p>Here will find implementation for Timer0 Module available with all modes 1.OVF(Polling & Interrupt) 2.CTC(Polling & Interrupt & waveform Generation) 3.Fast PWM  4.Phase correct PWM</p>
