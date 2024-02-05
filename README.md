@@ -7,6 +7,7 @@
   - [LCD](#LCD)
   - [NTC](#NTC)
   - [LM35](#LM35)
+  - [Servo](#servo)
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
   - [EXT-INT](#EXT-INT)
@@ -45,6 +46,9 @@
 
 ### LM35
 <p>Here will find implementation for LM35 </p>
+
+### Servo
+<p>Here will find Implement  of Servo Motor That depend on exist of Timer 1 using ICR1 as Top value</p>
 
 ## MCAL
 <p>Here will find All drivers for MCU specefic and deal direct with it</p>
