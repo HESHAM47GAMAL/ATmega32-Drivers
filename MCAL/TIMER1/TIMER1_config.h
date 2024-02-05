@@ -41,7 +41,7 @@
 #define T1_PHASE_CORRECT_PWM_MODE              3   //  Option 4 -----------|
 #define T1_PHASE_FREQUENCY_CORRECT_PWM_MODE    4   //  Option 5 -----------|
 //                                                                         | Here
-#define TIMER1_CURRENT_MODE         T1_NORMAL_MODE        //<-----------------|
+#define TIMER1_CURRENT_MODE         T1_PHASE_CORRECT_PWM_MODE        //<-----------------|
 
 
 #define Enable_Interrupt_T1                1   //  Option 1 -----------|
@@ -130,11 +130,19 @@ typedef enum
         T1_INVERTING
     }CO_PWM_T1;
 
+    typedef enum 
+    {
+        OC1A_pin , 
+        OC1B_pin ,
+        OC1A_B_pin
+    }CO_used_pin ;
+
     typedef struct 
     {
         TIMER1_CLK    TIMER1_CLK_value;
         T1_FAST_phase_C_PWM_Top   T1_FAST_phase_C_PWM_Top_value;
         CO_PWM_T1   CO_PWM_T1_value ;
+        CO_used_pin CO_used_pin_value ;
     }TIMER1_ConfigType;
 
 #elif (TIMER1_CURRENT_MODE == T1_PHASE_FREQUENCY_CORRECT_PWM_MODE)

@@ -177,15 +177,34 @@ void Timer1_Init(void)
         SET_BIT(TCCR1B,WGM12);
         SET_BIT(TCCR1B,WGM13);
     }
-    /*  Set Output Compare pin (OC1B) behavior   */
-    TCCR1A = (TCCR1A & 0xCF) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1B0) ;
-    /*  Set Output Compare pin (OC1A) behavior   */
-    TCCR1A = (TCCR1A & 0x3F) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1A0) ;
+
+    if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1B_pin)
+        /*  Set Output Compare pin (OC1B) behavior   */
+        TCCR1A = (TCCR1A & 0xCF) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1B0) ;
+    else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_pin)
+        /*  Set Output Compare pin (OC1A) behavior   */
+        TCCR1A = (TCCR1A & 0x3F) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1A0) ;
+    else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_B_pin)
+    {
+        /*  Set Output Compare pin (OC1B) behavior   */
+        TCCR1A = (TCCR1A & 0xCF) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1B0) ;
+         /*  Set Output Compare pin (OC1A) behavior   */
+        TCCR1A = (TCCR1A & 0x3F) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1A0) ;
+    }
 
     if(TIMER1_ConfigTypeParam.CO_PWM_T1_value != T1_NORMAL_PORT_OPERATION)
-        /*  Need to set this pin to output  OC1B & OC1A  */
-        GPIO_SetPinDirection(PORTD_ID,PIN4_ID,OUTPUT_PIN);
-        GPIO_SetPinDirection(PORTD_ID,PIN5_ID,OUTPUT_PIN);  
+    { /*  Need to set this pin to output  OC1B & OC1A  */
+        if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1B_pin)
+            GPIO_SetPinDirection(PORTD_ID,PIN4_ID,OUTPUT_PIN);
+        else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_pin)
+            GPIO_SetPinDirection(PORTD_ID,PIN5_ID,OUTPUT_PIN);  
+        else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_B_pin)
+        {
+            GPIO_SetPinDirection(PORTD_ID,PIN4_ID,OUTPUT_PIN);
+            GPIO_SetPinDirection(PORTD_ID,PIN5_ID,OUTPUT_PIN);  
+        }
+    }   
+        
     /*  Set Clock for Timer    */
     TCCR1B = (TCCR1B & 0xF8) | (TIMER1_ConfigTypeParam.TIMER1_CLK_value);
 
@@ -226,15 +245,33 @@ void Timer1_Init(void)
         CLEAR_BIT(TCCR1B,WGM12);
         SET_BIT(TCCR1B,WGM13);
     }
-    /*  Set Output Compare pin (OC1B) behavior   */
-    TCCR1A = (TCCR1A & 0xCF) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1B0) ;
-    /*  Set Output Compare pin (OC1A) behavior   */
-    TCCR1A = (TCCR1A & 0x3F) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1A0) ;
+    
+    if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1B_pin)
+        /*  Set Output Compare pin (OC1B) behavior   */
+        TCCR1A = (TCCR1A & 0xCF) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1B0) ;
+    else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_pin)
+        /*  Set Output Compare pin (OC1A) behavior   */
+        TCCR1A = (TCCR1A & 0x3F) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1A0) ;
+    else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_B_pin)
+    {
+        /*  Set Output Compare pin (OC1B) behavior   */
+        TCCR1A = (TCCR1A & 0xCF) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1B0) ;
+         /*  Set Output Compare pin (OC1A) behavior   */
+        TCCR1A = (TCCR1A & 0x3F) | (TIMER1_ConfigTypeParam.CO_PWM_T1_value << COM1A0) ;
+    }
 
     if(TIMER1_ConfigTypeParam.CO_PWM_T1_value != T1_NORMAL_PORT_OPERATION)
-        /*  Need to set this pin to output  OC1B & OC1A  */
-        GPIO_SetPinDirection(PORTD_ID,PIN4_ID,OUTPUT_PIN);
-        GPIO_SetPinDirection(PORTD_ID,PIN5_ID,OUTPUT_PIN); 
+    { /*  Need to set this pin to output  OC1B & OC1A  */
+        if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1B_pin)
+            GPIO_SetPinDirection(PORTD_ID,PIN4_ID,OUTPUT_PIN);
+        else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_pin)
+            GPIO_SetPinDirection(PORTD_ID,PIN5_ID,OUTPUT_PIN);  
+        else if(TIMER1_ConfigTypeParam.CO_used_pin_value == OC1A_B_pin)
+        {
+            GPIO_SetPinDirection(PORTD_ID,PIN4_ID,OUTPUT_PIN);
+            GPIO_SetPinDirection(PORTD_ID,PIN5_ID,OUTPUT_PIN);  
+        }
+    }   
     /*  Set Clock for Timer    */
     TCCR1B = (TCCR1B & 0xF8) | (TIMER1_ConfigTypeParam.TIMER1_CLK_value);
 
