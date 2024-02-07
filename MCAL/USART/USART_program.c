@@ -23,6 +23,9 @@
 /**************************                   Extern Global variable                   **************************/
 extern USART_ConfigType  USART_ConfigTypeParam ;
 
+/**************************                   Function Implement                   **************************/
+
+
 void USART_Init(void)
 {
     /* configue ability of transmit and recieve  */
@@ -89,8 +92,10 @@ uint16 USART_ReceiveBytePolling(void)
 {
     uint16 Returned_value = 0;
 
+    /*  Will wait until receive data */
+    /*  So you stuck here call this function and there are not MCU send Data for you*/
     while(BIT_IS_CLEAR(UCSRA,RXC));
-
+    /*  Should read 9th bit of data if use 9 bit data before UDR*/
     Returned_value = ( (UCSRB & 0x02) << 7) ;
     Returned_value |= UDR ;
     return Returned_value;
@@ -119,16 +124,5 @@ void USART_ReceiveStringPolling(uint8 * receive_data)
         receive_data[it] = (uint8)USART_ReceiveBytePolling();
     }
     receive_data[it] = '\0';
-}
-
-void USART_AppendTerminateChar(uint8 * send_data)
-{
-    uint8 it =0 ;
-    while(send_data[it] != '\0')
-        it++;
-    send_data[it] != '#';
-    it++;
-    send_data[it] = '\0';
-
 }
 
