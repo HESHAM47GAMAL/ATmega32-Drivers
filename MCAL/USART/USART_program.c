@@ -14,7 +14,7 @@
 #include "USART_private.h"
 #include "USART_interface.h"
 #include "USART_config.h"
-
+#include "../GPIO/GPIO_interface.h"
 #include "../../SERVICE/COMMON_MACROS.h"
 #include "../../SERVICE/IVT.h"
 
@@ -55,8 +55,18 @@ void USART_Init(void)
     UCSRB = (UCSRB & 0xFB) | ((USART_ConfigTypeParam.USART_DATA_Bit_value & 0x04) << UCSZ2) ;
     /*  Activate Double speed of Asynchronous   */
     SET_BIT(UCSRA,U2X);
-
+    #elif(USART_CURRENT_MODE == USART_Synchronous)
+    /*  Set pin PB0 (XCK)  direction  */
+    if(USART_ConfigTypeParam.USART_XCK_STATE_value == MASTER_clk)
+        GPIO_SetPinDirection(PORTB_ID,PIN0_ID,OUTPUT_PIN);
+    else if(USART_ConfigTypeParam.USART_XCK_STATE_value == SLAVE_clk)
+        GPIO_SetPinDirection(PORTB_ID,PIN0_ID,INPUT_PIN);
+    /*  SEt synchronous mode & parity & stop & data setting & clock synchronization Polarity */
+    UCSRC = (1 << URSEL) | (1 << UMSEL) | (USART_ConfigTypeParam.USART_Parity_value << UPM0) | (USART_ConfigTypeParam.USART_NUM_STOP_Bit_value << USBS) | ((USART_ConfigTypeParam.USART_DATA_Bit_value & 0x03) << UCSZ0) | (USART_ConfigTypeParam.USART_CLK_Polarity_vlaue << UCPOL);
+    /*  Set 9 data bit if exist in setting in config.c*/
+    UCSRB = (UCSRB & 0xFB) | ((USART_ConfigTypeParam.USART_DATA_Bit_value & 0x04) << UCSZ2) ;
     #endif
+
     /*  setting value of UBRR  */
     UBRRL = (uint8)(USART_ConfigTypeParam.UBRR_value & 0x00FF)  ; /* take only low * bits*/
     if(USART_ConfigTypeParam.UBRR_value > 0xFF)

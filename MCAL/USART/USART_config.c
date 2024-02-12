@@ -25,7 +25,16 @@ USART_ConfigType USART_ConfigTypeParam ={
     51   /* Set UBRR value Here*/
 };
 
-
+#elif(USART_CURRENT_MODE == USART_Synchronous)
+USART_ConfigType USART_ConfigTypeParam ={
+    USART_8_bit ,   /*  set number of data bit in frame*/
+    USART_No_Parity ,     /*  Set type of parity used*/
+    USART_1_STOP ,      /*  set number of stop bit*/
+    USART_Transmit_Receive , 
+    USART_TX_RISING_RX_FALLING ,
+    MASTER_clk,
+    415   /* Set UBRR value Here*/
+};
 
 #endif
 

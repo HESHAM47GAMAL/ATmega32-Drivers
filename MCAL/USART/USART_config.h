@@ -24,7 +24,7 @@
 #define USART_Synchronous                                   2   //  Option 1 -----------|
 #define USART_Multi_processor                              3   //  Option 1 -----------| (Actually I don't know how to use or work 😂 and Not Handled⚠️ )
 //                                                                                      | Here
-#define USART_CURRENT_MODE          USART_Asynchronous_Normal_Speed //<-----------------|
+#define USART_CURRENT_MODE          USART_Synchronous //<-----------------|
 
 
 #define Enable_Interrupt_USART                1        //  Option 1 -----------|
@@ -55,13 +55,14 @@ typedef enum
     USART_2_STOP
 }USART_NUM_STOP_Bit ;
 
-#if ((USART_CURRENT_MODE == USART_Asynchronous_Normal_Speed) || (USART_CURRENT_MODE == USART_Asynchronous_Double_Speed))
 typedef enum 
 {
     USART_Transmit_Only ,
     USART_Receive_Only ,
     USART_Transmit_Receive
 }USART_COM_OPTION ;
+
+#if ((USART_CURRENT_MODE == USART_Asynchronous_Normal_Speed) || (USART_CURRENT_MODE == USART_Asynchronous_Double_Speed))
 
 typedef struct 
 {
@@ -74,18 +75,31 @@ typedef struct
 
 #elif(USART_CURRENT_MODE == USART_Synchronous)
 
-typedef enum{
-    USART_MASTER ,
-    USART_SLAVE 
-}USART_Synchronous_MS;
 
-typdef enum 
+
+typedef enum 
 {
     USART_TX_RISING_RX_FALLING ,
     USART_TX_FALLING_RX_RISING
 }USART_CLK_Polarity ;
 
+typedef enum
+{
+    MASTER_clk ,
+    SLAVE_clk
+}USART_XCK_STATE ;
 
+
+typedef struct 
+{
+    USART_DATA_Bit USART_DATA_Bit_value ;
+    USART_Parity USART_Parity_value ;
+    USART_NUM_STOP_Bit USART_NUM_STOP_Bit_value ;
+    USART_COM_OPTION USART_COM_OPTION_value ;
+    USART_CLK_Polarity USART_CLK_Polarity_vlaue;
+    USART_XCK_STATE USART_XCK_STATE_value;
+    uint16 UBRR_value ;
+}USART_ConfigType ;
 
 #endif
 

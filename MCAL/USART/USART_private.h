@@ -44,6 +44,7 @@
 #define UPM0               4
 #define USBS               3
 #define UCSZ0              1
+#define UCPOL              0
 
 
 #endif

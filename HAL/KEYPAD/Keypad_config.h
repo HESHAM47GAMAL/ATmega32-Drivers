@@ -56,7 +56,7 @@
 
 
 /*** here can control if i want to wait until pressed button release before return value ***/
-#define WAIT_BEFORE_RETURN_PRESSED_KEY          False  //(TRUE , FALSE)
+#define WAIT_BEFORE_RETURN_PRESSED_KEY          FALSE  //(TRUE , FALSE)
 
 
 
