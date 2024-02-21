@@ -11,7 +11,8 @@
     "std_types.h": "c",
     "timer1_interface.h": "c",
     "timer1_config.h": "c",
-    "usart_config.h": "c"
+    "usart_config.h": "c",
+    "spi_config.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
