@@ -34,14 +34,40 @@
 #define KEYPAD_ROW_NUM              4
 #define KEYPAD_COL_NUM              4 
 
+#define KEYPAD_SequencePin              0
+#define KEYPAD_NOTSequencePin           1
+#define Option_PIN_KEYPAD               KEYPAD_NOTSequencePin
+
 
 /***  Choose port that will connected to keypad***/
-#define PORT_FOR_KEYPAD         PORTA_ID
 
-/***  choose first pin from cols lines of keypad will connect to MCU***/
-#define KEYPAD_FIRST_PIN_ROW_ID         PIN0_ID
+#if(Option_PIN_KEYPAD == KEYPAD_SequencePin)
 
-#define KEYPAD_FIRST_PIN_COL_ID         PIN4_ID    
+    #define PORT_FOR_KEYPAD         PORTA_ID
+
+    /***  choose first pin from cols lines of keypad will connect to MCU***/
+    #define KEYPAD_FIRST_PIN_ROW_ID         PIN0_ID
+
+    #define KEYPAD_FIRST_PIN_COL_ID         PIN4_ID    
+
+#elif(Option_PIN_KEYPAD == KEYPAD_NOTSequencePin)
+
+    #define KEYPAD_COL_PORT         PORTD_ID
+
+    #define     KEYPAD_COL0         PIN7_ID
+    #define     KEYPAD_COL1         PIN6_ID
+    #define     KEYPAD_COL2         PIN5_ID
+    #define     KEYPAD_COL3         PIN3_ID
+
+
+    #define  KEYPAD_ROW_PORT        PORTC_ID
+
+    #define KEYPAD_ROW_0            PIN5_ID
+    #define KEYPAD_ROW_1            PIN4_ID
+    #define KEYPAD_ROW_2            PIN3_ID
+    #define KEYPAD_ROW_3            PIN2_ID
+
+#endif
 
 /*** state that I will read in pin when press button from keypad ***/
 #define KEYPAD_PRESSED_STATE            LOGIC_LOW   //(LOGIC_HIGH , LOGIC_LOW)   
@@ -56,8 +82,13 @@
 
 
 /*** here can control if i want to wait until pressed button release before return value ***/
-#define WAIT_BEFORE_RETURN_PRESSED_KEY          FALSE  //(TRUE , FALSE)
-
+#define WAIT_BEFORE_RETURN_PRESSED_KEY          0  	//-----(OPTION 1)
+//															|
+#define RETURN_NUM_ONLY_ONCE_UNTIL_RELEASE      1	//-----(OPTION 2)  as here return only number pressed once until release btn and press it again to return it or press another btn not same previous
+//															|
+#define DO_NOTHING_KEYPAD 						2	//-----(OPTION 3)
+//															|
+#define WHAT_DO_WITH_PRESS			RETURN_NUM_ONLY_ONCE_UNTIL_RELEASE
 
 
 /**************************                   Macros like function   & Function Declare                **************************/

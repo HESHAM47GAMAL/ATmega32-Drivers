@@ -12,7 +12,10 @@
     "timer1_interface.h": "c",
     "timer1_config.h": "c",
     "usart_config.h": "c",
-    "spi_config.h": "c"
+    "spi_config.h": "c",
+    "i2c_config.h": "c",
+    "ivt.h": "c",
+    "ext_eeprom_interface.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

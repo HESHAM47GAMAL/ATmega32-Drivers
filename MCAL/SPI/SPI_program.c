@@ -51,7 +51,7 @@ void SPI_Init(void)
 }
 
 
-uint8 SPI_SendBytePolling(uint8 send_data)
+void SPI_SendBytePolling(uint8 send_data)
 {
 
     /*  Set value that will send if you master */
@@ -61,7 +61,7 @@ uint8 SPI_SendBytePolling(uint8 send_data)
     while(BIT_IS_CLEAR(SPSR,SPIF));
 
     /*  To clear this flag in polling mode should access this bit after transfer finish and access Data regester    */
-    return SPDR ;
+    SPDR ;
 }
 
 
@@ -96,8 +96,8 @@ void SPI_ReceiveStringPolling(uint8 * str)
     str[it] = SPI_ReceiveBytePolling();
     while(str[it] != '#')
     {
-        str[it] = SPI_ReceiveBytePolling();
         it++;
+        str[it] = SPI_ReceiveBytePolling();
     }
     /*  Replace # character with Null character to be able to used*/
     str[it] = '\0';

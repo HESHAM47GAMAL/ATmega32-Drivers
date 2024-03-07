@@ -25,7 +25,7 @@
 void SPI_Init(void);
 
 
-uint8 SPI_SendBytePolling(uint8 send_data);
+void SPI_SendBytePolling(uint8 send_data);
 
 uint8 SPI_ReceiveBytePolling(void);
 

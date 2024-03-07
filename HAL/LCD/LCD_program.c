@@ -13,13 +13,17 @@
 /**************************                   INCLUDES                   **************************/
 #include "LCD_config.h"
 #include "LCD_interface.h"
+#include "LCD_private.h"
 #include "../../MCAL/GPIO/GPIO_interface.h"
 #include <stdlib.h>
 #include <string.h>
-
+#define F_CPU 16000000UL
 #include <util/delay.h>
 
 /**************************                   Static Variables                  **************************/
+/*  Visualization of ❤️ in LCD  As You Can extern this in main.c File to use it  */
+uint8 HeartCustomCharacter [] = {0x00 , 0x00 , 0x0A , 0x1F , 0x1F ,0x0E , 0x04 , 0x00};
+uint8 BatteryCharge [] = {0x0E , 0x11 , 0x11 , 0x11 , 0x1F , 0x1F , 0x1F , 0x00};
 
 
 static uint8 row_global = 0 ;
@@ -33,8 +37,10 @@ void LCD_init(void)
 {
     /*  congfigure RS LCD pin   */
     GPIO_SetPinDirection(LCD_RS_PORT_ID,LCD_RS_PIN_ID,OUTPUT_PIN);
-    /*  congfigure R/W LCD pin   */
-    GPIO_SetPinDirection(LCD_RW_PORT_ID,LCD_RW_PIN_ID,OUTPUT_PIN);
+    #if(OPTION_RW_PIN == READ_WRITE_LCD)
+        /*  congfigure R/W LCD pin   */
+        GPIO_SetPinDirection(LCD_RW_PORT_ID,LCD_RW_PIN_ID,OUTPUT_PIN);
+    #endif
     /*  congfigure E LCD pin   */
     GPIO_SetPinDirection(LCD_E_PORT_ID,LCD_E_PIN_ID,OUTPUT_PIN);
 
@@ -44,14 +50,22 @@ void LCD_init(void)
         /*  Send command that tell I want to use 8 data pins*/
         LCD_SendCommand(LCD_2_LINE_8_BIT_5x8_DOT) ; 
     #elif(LCD_BITS_MODE == LCD_4_BIT_MODE)
-        for(uint8 it = 0 ; it < 4 ;it++)
-        {
-            GPIO_SetPinDirection(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,OUTPUT_PIN);
-        }
-        /*  It's step mandatory in 4 bits data pins*/
-        LCD_SendCommand(LCD_RETURN_TO_HOME_IN_SCREEN);
-        /*  Send command that tell I want to use 4 data pins*/
-        LCD_SendCommand(LCD_2_LINE_4_BIT_5x8_DOT) ; 
+        #if(OPTION_PINS  == Sequencial_PINS)
+            for(uint8 it = 0 ; it < 4 ;it++)
+            {
+                GPIO_SetPinDirection(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,OUTPUT_PIN);
+            }
+        #elif(OPTION_PINS == NOT_Sequencial_PINS)
+            GPIO_SetPinDirection(LCD_DATA_PORT,PIN_D4,OUTPUT_PIN);
+            GPIO_SetPinDirection(LCD_DATA_PORT,PIN_D5,OUTPUT_PIN);
+            GPIO_SetPinDirection(LCD_DATA_PORT,PIN_D6,OUTPUT_PIN);
+            GPIO_SetPinDirection(LCD_DATA_PORT,PIN_D7,OUTPUT_PIN);
+
+        #endif
+            /*  It's step mandatory in 4 bits data pins*/
+            LCD_SendCommand(LCD_RETURN_TO_HOME_IN_SCREEN);
+            /*  Send command that tell I want to use 4 data pins*/
+            LCD_SendCommand(LCD_2_LINE_4_BIT_5x8_DOT) ; 
     #endif
 
     /*  Put configuration of Cursor     */
@@ -73,9 +87,10 @@ void LCD_SendCommand(uint8 Instruction_value)
 {
     /*  To send instruction command first thing write LOW to RS     */
     GPIO_WritePin(LCD_RS_PORT_ID,LCD_RS_PIN_ID,LOGIC_LOW);
-    /*  I need to write data to lCD*/
-    GPIO_WritePin(LCD_RW_PORT_ID,LCD_RW_PIN_ID,LOGIC_LOW);
-
+    #if(OPTION_RW_PIN == READ_WRITE_LCD)
+        /*  I need to write data to lCD*/
+        GPIO_WritePin(LCD_RW_PORT_ID,LCD_RW_PIN_ID,LOGIC_LOW);
+    #endif
     _delay_ms(1); /* delay for processing Tas = 50ns */
 
     /*  Write high to E pin in LCD to read data that will send  */
@@ -91,10 +106,17 @@ void LCD_SendCommand(uint8 Instruction_value)
     #elif (LCD_BITS_MODE == LCD_4_BIT_MODE)
         /*  Note⛔🙆‍♂️👀 Here Most send MS 4Bits  First */
         uint8 First_4_bit = (Instruction_value >> 4) ;
-        for(uint8 it =0 ; it < 4 ;it++ )
-        {
-            GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
-        }
+        #if(OPTION_PINS  == Sequencial_PINS)
+            for(uint8 it =0 ; it < 4 ;it++ )
+            {
+                GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
+            }
+        #elif(OPTION_PINS == NOT_Sequencial_PINS)
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D4,( (First_4_bit >> 0) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D5,( (First_4_bit >> 1) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D6,( (First_4_bit >> 2) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D7,( (First_4_bit >> 3) & (0x01) ) );
+        #endif
         _delay_ms(1); /* delay for processing Tdsw = 100ns */
          /*  Write Low to E pin in LCD to there is data in pins I wnat to read  as here read Most significant of Instruction*/
         GPIO_WritePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
@@ -106,11 +128,18 @@ void LCD_SendCommand(uint8 Instruction_value)
 
         /*  Handle LS 4Bits to send     */
         First_4_bit = Instruction_value & 0x0F ;
-        /*  Send  last 4 Bit of data    */
-        for(uint8 it =0 ; it < 4 ;it++ )
-        {
-            GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
-        }
+        #if(OPTION_PINS  == Sequencial_PINS)
+            /*  Send  last 4 Bit of data    */
+            for(uint8 it =0 ; it < 4 ;it++ )
+            {
+                GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
+            }
+        #elif(OPTION_PINS == NOT_Sequencial_PINS)
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D4,( (First_4_bit >> 0) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D5,( (First_4_bit >> 1) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D6,( (First_4_bit >> 2) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D7,( (First_4_bit >> 3) & (0x01) ) );
+        #endif
         _delay_ms(1); /* delay for processing Tdsw = 100ns */
     #endif
 
@@ -125,9 +154,10 @@ void LCD_DisplayCharacter(uint8 char_value)
 {
     /*  Here I want to display data in LCD so will write high in RS */
     GPIO_WritePin(LCD_RS_PORT_ID,LCD_RS_PIN_ID,LOGIC_HIGH);
-    /*  As I want to write data to DDRAM to display in LCD  */
-    GPIO_WritePin(LCD_RW_PORT_ID,LCD_RW_PIN_ID,LOGIC_LOW);
-
+    #if(OPTION_RW_PIN == READ_WRITE_LCD)
+        /*  As I want to write data to DDRAM to display in LCD  */
+        GPIO_WritePin(LCD_RW_PORT_ID,LCD_RW_PIN_ID,LOGIC_LOW);
+    #endif
     _delay_ms(1); /* delay for processing Tas = 50ns */
 
     /*  Write high to E pin in LCD to read data that will send  */
@@ -142,10 +172,17 @@ void LCD_DisplayCharacter(uint8 char_value)
     #elif (LCD_BITS_MODE == LCD_4_BIT_MODE)
         /*  Note⛔🙆‍♂️👀 Here Most send MS 4Bits  First */
         uint8 First_4_bit = (char_value >> 4) ;
-        for(uint8 it =0 ; it < 4 ;it++ )
-        {
-            GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
-        }
+        #if(OPTION_PINS  == Sequencial_PINS)
+            for(uint8 it =0 ; it < 4 ;it++ )
+            {
+                GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
+            }
+        #elif(OPTION_PINS == NOT_Sequencial_PINS)
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D4,( (First_4_bit >> 0) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D5,( (First_4_bit >> 1) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D6,( (First_4_bit >> 2) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D7,( (First_4_bit >> 3) & (0x01) ) );
+        #endif
         _delay_ms(1); /* delay for processing Tdsw = 100ns */
          /*  Write Low to E pin in LCD to there is data in pins I wnat to read  as here read Most significant of Instruction*/
         GPIO_WritePin(LCD_E_PORT_ID,LCD_E_PIN_ID,LOGIC_LOW);
@@ -157,11 +194,18 @@ void LCD_DisplayCharacter(uint8 char_value)
 
         /*  Handle LS 4Bits to send     */
         First_4_bit = char_value & 0x0F ;
-        /*  Send  last 4 Bit of data    */
-        for(uint8 it =0 ; it < 4 ;it++ )
-        {
-            GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
-        }
+        #if(OPTION_PINS  == Sequencial_PINS)
+            /*  Send  last 4 Bit of data    */
+            for(uint8 it =0 ; it < 4 ;it++ )
+            {
+                GPIO_WritePin(LCD_DATA_PORT,LCD_4_BIT_START_PIN + it,( (First_4_bit >> it) & (0x01) ) );
+            }
+        #elif(OPTION_PINS == NOT_Sequencial_PINS)
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D4,( (First_4_bit >> 0) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D5,( (First_4_bit >> 1) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D6,( (First_4_bit >> 2) & (0x01) ) );
+            GPIO_WritePin(LCD_DATA_PORT,PIN_D7,( (First_4_bit >> 3) & (0x01) ) );
+        #endif
         _delay_ms(1); /* delay for processing Tdsw = 100ns */
     #endif
     /*  Write Low to E pin in LCD to there is data in pins I wnat to read  */
@@ -169,10 +213,12 @@ void LCD_DisplayCharacter(uint8 char_value)
     _delay_ms(1); /* delay for processing Th = 13ns */
 
     col_global++;
-    if(col_global == 16)
+    if(col_global == MAX_NUM_COL_LCD)
     {
-        row_global = 1 ;
+        row_global += 1 ;
         col_global = 0 ;
+        if(row_global == MAX_NUM_COL_LCD)
+            row_global = 0;
     }
 }
 
@@ -206,14 +252,35 @@ void LCD_MoveCursor(uint8 row , uint8 col)
             col_global = col ;
             row_global = 1 ;
             break;
+    #if(MAX_NUM_ROW_LCD == 4 )    
+        #if(MAX_NUM_COL_LCD == 16)  // if LCD 16 Columns
+             case 2 :
+                New_Location = col + 0x10 ;
+                col_global = col ;
+                row_global = 2 ;
+                break;
 
-        case 2 :
-            New_Location = col + 0x10 ;
-            break;
+            case 3 : 
+                New_Location = col + 0x50 ;
+                col_global = col ;
+                row_global = 3 ;
+                break;
 
-        case 3 : 
-            New_Location = col + 0x50 ;
-            break;
+        #elif(MAX_NUM_COL_LCD == 20)    // if LCD 20 Columns
+
+            case 2 :
+                New_Location = col + 0x14 ;
+                col_global = col ;
+                row_global = 2 ;
+                break;
+
+            case 3 : 
+                New_Location = col + 0x54 ;
+                col_global = col ;
+                row_global = 3 ;
+                break;
+        #endif
+    #endif
         default :
             break ;
     }
@@ -238,17 +305,39 @@ void LCD_ClearScreen(void)
 
 void LCD_MoveCursorRight(void)
 {
-    
-    if(col_global == 15 && row_global == 0 )
+#if(MAX_NUM_ROW_LCD == 2)
+    if(col_global == (MAX_NUM_COL_LCD -1) && row_global == 0 )
     {
         col_global = 0 , row_global = 1 ;
         LCD_MoveCursor(row_global,col_global);
     }
-    else if (col_global == 15 && row_global == 1 )
+    else if (col_global == (MAX_NUM_COL_LCD -1) && row_global == 1 )
     {
         col_global = 0 , row_global = 0 ;
         LCD_MoveCursor(row_global,col_global);
     }
+#elif(MAX_NUM_ROW_LCD == 4)
+    if(col_global == (MAX_NUM_COL_LCD -1) && row_global == 0 )
+    {
+        col_global = 0 , row_global = 1 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == (MAX_NUM_COL_LCD -1) && row_global == 1 )
+    {
+        col_global = 0 , row_global = 2 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == (MAX_NUM_COL_LCD -1) && row_global == 2 )
+    {
+        col_global = 0 , row_global = 3 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == (MAX_NUM_COL_LCD -1) && row_global == 3 )
+    {
+        col_global = 0 , row_global = 0 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+#endif
     else{ // safe shift right no problem
         LCD_SendCommand(LCD_CURSOR_MOVE_RIGHT);
         col_global++;
@@ -258,16 +347,39 @@ void LCD_MoveCursorRight(void)
 
 void LCD_MoveCursorLeft(void)
 {
+#if(MAX_NUM_ROW_LCD == 2)
     if(col_global == 0 && row_global == 0)
     {
-        col_global = 15 , row_global = 1 ;
+        col_global = (MAX_NUM_COL_LCD -1) , row_global = 1 ;
         LCD_MoveCursor(row_global,col_global);
     }
     else if (col_global == 0 && row_global == 1)
     {
-        col_global = 15 , row_global = 0 ;
+        col_global = (MAX_NUM_COL_LCD -1) , row_global = 0 ;
         LCD_MoveCursor(row_global,col_global);
     }
+#elif(MAX_NUM_ROW_LCD == 4)
+    if(col_global == 0 && row_global == 0)
+    {
+        col_global = (MAX_NUM_COL_LCD -1) , row_global = 3 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == 0 && row_global == 1)
+    {
+        col_global = (MAX_NUM_COL_LCD -1) , row_global = 0 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == 0 && row_global == 2)
+    {
+        col_global = (MAX_NUM_COL_LCD -1) , row_global = 1 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+    else if (col_global == 0 && row_global == 3)
+    {
+        col_global = (MAX_NUM_COL_LCD -1) , row_global = 2 ;
+        LCD_MoveCursor(row_global,col_global);
+    }
+#endif
     else
     {
         LCD_SendCommand(LCD_CURSOR_MOVE_LEFT);

@@ -41,7 +41,7 @@
 #define T1_PHASE_CORRECT_PWM_MODE              3   //  Option 4 -----------|
 #define T1_PHASE_FREQUENCY_CORRECT_PWM_MODE    4   //  Option 5 -----------|
 //                                                                         | Here
-#define TIMER1_CURRENT_MODE         T1_PHASE_CORRECT_PWM_MODE        //<-----------------|
+#define TIMER1_CURRENT_MODE         T1_NORMAL_MODE        //<-----------------|
 
 
 #define Enable_Interrupt_T1                1   //  Option 1 -----------|
