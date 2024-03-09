@@ -57,7 +57,7 @@ void LED_OnOffPositiveLogic(uint8 PORTX , uint8 PIN ,LEDState_config State_value
 void LED_OnOffNegativeLogic(uint8 PORTX , uint8 PIN ,LEDState_config State_value);
 
 /*
-*   @brief : this function used to initailize Servo as at same time initialize Timer 1 
+*   @brief : this function used to Toggle Led 
 *   @args  : void
 *   @return: no return
 *   @synchronous / Asynchronous : Synchronous
