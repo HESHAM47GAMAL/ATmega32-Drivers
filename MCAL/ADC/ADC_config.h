@@ -84,7 +84,7 @@ typedef struct
 #define ADC_Interrupt_Enable    1              //  Option 1 -----------|
 #define ADC_Interrupt_Disable   0              //  Option 2 -----------|  
 //                                                                     | Here
-#define ADC_Interrupt_State         ADC_Interrupt_Enable  //<----------
+#define ADC_Interrupt_State         ADC_Interrupt_Disable  //<----------
 
 
 

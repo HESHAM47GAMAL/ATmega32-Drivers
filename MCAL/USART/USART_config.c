@@ -20,9 +20,9 @@
 USART_ConfigType USART_ConfigTypeParam ={
     USART_8_bit ,   /*  set number of data bit in frame*/
     USART_Even_Parity ,     /*  Set type of parity used*/
-    USART_2_STOP ,      /*  set number of stop bit*/
+    USART_1_STOP ,      /*  set number of stop bit*/
     USART_Transmit_Receive , 
-    51   /* Set UBRR value Here*/
+    BUADRATE_9600_8HZ_UX20   /* Set UBRR value Here*/
 };
 
 #elif(USART_CURRENT_MODE == USART_Synchronous)

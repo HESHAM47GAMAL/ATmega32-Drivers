@@ -42,6 +42,9 @@
 #define SREG                   (* (volatile uint8 *) (0x5F) )
 
 
+#define Timer1_Read_Timer_16bitValue(Tv)   (Tv = TCNT1)
+
+
 #define FOC1A     3
 #define FOC1B     2
 #define WGM10     0

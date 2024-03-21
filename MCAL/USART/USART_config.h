@@ -24,7 +24,7 @@
 #define USART_Synchronous                                   2   //  Option 1 -----------|
 #define USART_Multi_processor                              3   //  Option 1 -----------| (Actually I don't know how to use or work 😂 and Not Handled⚠️ )
 //                                                                                      | Here
-#define USART_CURRENT_MODE          USART_Synchronous //<-----------------|
+#define USART_CURRENT_MODE          USART_Asynchronous_Normal_Speed //<-----------------|
 
 
 #define Enable_Interrupt_USART                1        //  Option 1 -----------|
@@ -61,6 +61,30 @@ typedef enum
     USART_Receive_Only ,
     USART_Transmit_Receive
 }USART_COM_OPTION ;
+
+typedef enum 
+{
+    BUADRATE_4800_8HZ_UX20    =  103 ,
+    BUADRATE_9600_8HZ_UX20    =   51 ,
+    BUADRATE_14_4K_8HZ_UX20   = 34 ,
+    BUADRATE_19_2K_8HZ_UX20   = 25 ,
+
+    BUADRATE_4800_16HZ_UX20    = 207 ,
+    BUADRATE_9600_16HZ_UX20   = 103 ,
+    BUADRATE_14_4K_16HZ_UX20  =  68 ,
+    BUADRATE_19_2K_16HZ_UX20  = 51
+
+}USART_BR_OPTION;
+
+ 
+// #define BUADRATE_9600_8HZ_UX20      51
+// #define BUADRATE_14_4K_8HZ_UX20     34
+// #define BUADRATE_19_2K_8HZ_UX20     25
+
+// #define BUADRATE_4800_16HZ_UX20      207
+// #define BUADRATE_9600_16HZ_UX20      103
+// #define BUADRATE_14_4K_16HZ_UX20     68
+// #define BUADRATE_19_2K_16HZ_UX20     51
 
 #if ((USART_CURRENT_MODE == USART_Asynchronous_Normal_Speed) || (USART_CURRENT_MODE == USART_Asynchronous_Double_Speed))
 

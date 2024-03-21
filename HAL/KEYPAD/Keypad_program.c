@@ -51,38 +51,27 @@ void Keypad_init(void)
             #endif
         }
     #elif(Option_PIN_KEYPAD == KEYPAD_NOTSequencePin)
-
+        for(uint8 it = 0 ; it < KEYPAD_ROW_NUM ; it++)  // to setup all rows
+        {
             #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
 
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT ,KEYPAD_ROW_0 , INPUT_PIN_PULLUP );
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT ,KEYPAD_ROW_1 , INPUT_PIN_PULLUP );
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT ,KEYPAD_ROW_2 , INPUT_PIN_PULLUP );
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT ,KEYPAD_ROW_3 , INPUT_PIN_PULLUP );
+            GPIO_SetPinDirection(KEYPAD_ROW_PORT ,sequelizeROW[it] , INPUT_PIN_PULLUP );
+            
 
             #elif(KEYPAD_PRESSED_STATE == LOGIC_HIGH)
-
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT , KEYPAD_ROW_0 , INPUT_PIN );  // need external pull down
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT , KEYPAD_ROW_1 , INPUT_PIN );  // need external pull down
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT , KEYPAD_ROW_2 , INPUT_PIN );  // need external pull down
-            GPIO_SetPinDirection(KEYPAD_ROW_PORT , KEYPAD_ROW_3 , INPUT_PIN );  // need external pull down
+            GPIO_SetPinDirection(KEYPAD_ROW_PORT ,sequelizeROW[it] , INPUT_PIN ); // need external pull down
 
             #endif
-
-            GPIO_SetPinDirection(KEYPAD_COL_PORT , KEYPAD_COL0 , OUTPUT_PIN );
-            GPIO_SetPinDirection(KEYPAD_COL_PORT , KEYPAD_COL1 , OUTPUT_PIN );
-            GPIO_SetPinDirection(KEYPAD_COL_PORT , KEYPAD_COL2 , OUTPUT_PIN );
-            GPIO_SetPinDirection(KEYPAD_COL_PORT , KEYPAD_COL3 , OUTPUT_PIN );
+        }
+        for(uint8 it = 0 ; it < KEYPAD_COL_NUM ; it++)
+        {
+            GPIO_SetPinDirection(KEYPAD_COL_PORT , sequelizeCOL[it] , OUTPUT_PIN );
             #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL0 , LOGIC_HIGH ); // set all columns to High
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL1 , LOGIC_HIGH ); // set all columns to High
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL2 , LOGIC_HIGH ); // set all columns to High
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL3 , LOGIC_HIGH ); // set all columns to High
+                GPIO_WritePin(KEYPAD_COL_PORT , sequelizeCOL[it] , LOGIC_HIGH ); // set all columns to High
             #elif  (KEYPAD_PRESSED_STATE == LOGIC_HIGH)
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL0 , LOGIC_LOW ); // set all columns to low
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL1 , LOGIC_LOW ); // set all columns to low
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL2 , LOGIC_LOW ); // set all columns to low
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL3 , LOGIC_LOW ); // set all columns to low
+                GPIO_WritePin(KEYPAD_COL_PORT , sequelizeCOL[it] , LOGIC_LOW );// set all columns to low
             #endif
+        }
 
     #endif
 }
@@ -178,20 +167,21 @@ uint8 Keypad_GetPressedKey(void)
         
             // set  one column with value want to read to loop in rows to read which key from this column pressed
             #if (KEYPAD_PRESSED_STATE == LOGIC_LOW)
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL0 , LOGIC_HIGH ); // set all columns to High
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL1 , LOGIC_HIGH ); // set all columns to High
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL2 , LOGIC_HIGH ); // set all columns to High
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL3 , LOGIC_HIGH ); // set all columns to High
+                for(uint8 it = 0 ; it < KEYPAD_COL_NUM ; it++)
+                {
+                    GPIO_WritePin(KEYPAD_COL_PORT , sequelizeCOL[it] , LOGIC_HIGH ); // set all columns to High
+                }
+
             #elif  (KEYPAD_PRESSED_STATE == LOGIC_HIGH)
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL0 , LOGIC_LOW ); // set all columns to low
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL1 , LOGIC_LOW ); // set all columns to low
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL2 , LOGIC_LOW ); // set all columns to low
-                GPIO_WritePin(KEYPAD_COL_PORT , KEYPAD_COL3 , LOGIC_LOW ); // set all columns to low
+                for(uint8 it = 0 ; it < KEYPAD_COL_NUM ; it++)
+                {
+                    GPIO_WritePin(KEYPAD_COL_PORT , sequelizeCOL[it] , LOGIC_LOW ); // set all columns to High
+                }
             #endif
 
             while(1)
             {
-                uint8 col , row, pressed_key;
+                uint8 col , row, pressed_key =200;
                 for(col = 0 ; col < KEYPAD_COL_NUM ; col++)
                 {
                     // set  one column with value want to read to loop in rows to read which key from this column pressed

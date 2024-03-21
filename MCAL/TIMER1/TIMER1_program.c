@@ -88,7 +88,7 @@ void Timer1_Init(void)
     
     #elif(NORMAL_use_T1_state == T1_TIME_DELAY) 
     
-        #if(INTERUPT_STATE_T0 == Enable_Interrupt_T0)
+        #if(INTERUPT_STATE_T1 == Enable_Interrupt_T1)
             /*  Enable Global Interrupt  */
             SET_BIT(SREG , 7);
             /*  Enable overflow Interrupt  */

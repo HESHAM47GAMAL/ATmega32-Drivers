@@ -47,7 +47,7 @@
 #define Enable_Interrupt_T1                1   //  Option 1 -----------|
 #define Disable_Interrupt_T1               0   //  Option 2 -----------|
 //                                                                     |
-#define INTERUPT_STATE_T1          Enable_Interrupt_T1    //<------------|
+#define INTERUPT_STATE_T1          Disable_Interrupt_T1    //<------------|
 
 
 
@@ -81,7 +81,7 @@ typedef enum
 #define    T1_TIME_DELAY            0 //  Option 1 -----------|
 #define    T1_ICU                   1 //  Option 2 -----------|
 //                                                            | Here   
-#define NORMAL_use_T1_state         T1_ICU   //<-------|
+#define NORMAL_use_T1_state         T1_TIME_DELAY   //<-------|
 
 #if (NORMAL_use_T1_state  == T1_ICU)
     typedef enum{
