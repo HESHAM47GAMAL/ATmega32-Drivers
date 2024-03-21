@@ -26,7 +26,13 @@
 uint64 last_Code_Value = 0 ;
 
 
-
+/*
+*   @brief : this function used in catch start of remote signal and count time for each bit to be able to detect if it 1 or 0 
+*   @arg1  arr: pointer to uint8 used to store time for each bit 
+*   @return: void
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
 void IR_Remote_Analysis(uint16 * arr)
 {
 
@@ -143,8 +149,6 @@ uint64 IR_Remote_Receive(uint8 * ProtocalType , uint8 * pressState)
 		if(Code_Variale==0)
 		{
 			Code_Variale = last_Code_Value;
-            LCD_MoveCursor(1,0);
-            LCD_DisplayString("if_1");
 		}
 		else
 		{

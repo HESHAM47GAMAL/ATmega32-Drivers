@@ -17,11 +17,6 @@
 /**************************                   INCLUDES                   **************************/
 #include "../../MCAL/GPIO/GPIO_interface.h"
 
-
-/*  ⚠️Note that mainly support NEC protocol  */
-
-
-
 #define Infrared_Remote_PORT            PORTD_ID   
 
 #define Infrared_Remote_PIN             PIN7_ID
