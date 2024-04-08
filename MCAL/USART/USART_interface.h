@@ -77,6 +77,39 @@ void USART_SendStringPolling(const uint8 * send_data);
 void USART_ReceiveStringPolling(uint8 * receive_data);
 
 
+/*
+*   @brief : this function used to set pointer to function to code that will called by ISR to receive Char  in interrupt mode
+*   @return: void
+*   @synchronous / Asynchronous : ASynchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void USART_receiveByteAsynchCallBack(void(*a_ptr)(void));
 
+
+/*
+*   @brief : this function used to set pointer to function to code that will called by ISR to receive String 👀 End by # 👀 in interrupt mode
+*   @return: void
+*   @synchronous / Asynchronous : ASynchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void USART_receiveStringAsynchCallBack(void(*a_ptr)(void));
+
+
+/*
+*   @brief : this function used to Enable Receive mode 
+*   @return: void
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+void USART_EnableReceiveInerrupt(void);
+
+
+/*
+*   @brief : this function used to return character recieved in UART
+*   @return : value received in UART buffer
+*   @synchronous / Asynchronous : Synchronous
+*   @ Reentrant / Non Reentrant : Reentrant
+*/
+uint16 USART_Catch_UDR_Value(void);
 
 #endif

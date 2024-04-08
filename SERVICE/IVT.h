@@ -18,6 +18,10 @@
 * 						Definition 						  *
 **********************************************************/
 
+#define SREG                (* (volatile uint8 *) (0x5F))
+
+
+
  #define RESET      			__vector_0
  #define INT0 					__vector_1
  #define INT1 					__vector_2

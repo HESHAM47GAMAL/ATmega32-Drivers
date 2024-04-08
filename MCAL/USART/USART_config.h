@@ -30,7 +30,7 @@
 #define Enable_Interrupt_USART                1        //  Option 1 -----------|
 #define Disable_Interrupt_USART               0        //  Option 2 -----------|
 //                                                                             |
-#define INTERUPT_STATE_USART          Disable_Interrupt_USART    //<------------|
+#define INTERUPT_STATE_USART          Enable_Interrupt_USART    //<------------|
 
 typedef enum 
 {
@@ -68,23 +68,23 @@ typedef enum
     BUADRATE_9600_8HZ_UX20    =   51 ,
     BUADRATE_14_4K_8HZ_UX20   = 34 ,
     BUADRATE_19_2K_8HZ_UX20   = 25 ,
+    BUADRATE_28_8K_8HZ_UX20   = 16 ,
+    BUADRATE_38_4K_8HZ_UX20   = 12 ,
+    BUADRATE_57_6K_8HZ_UX20   = 8 ,
+
+
 
     BUADRATE_4800_16HZ_UX20    = 207 ,
     BUADRATE_9600_16HZ_UX20   = 103 ,
     BUADRATE_14_4K_16HZ_UX20  =  68 ,
-    BUADRATE_19_2K_16HZ_UX20  = 51
+    BUADRATE_19_2K_16HZ_UX20  = 51,
+    BUADRATE_28_8K_16HZ_UX20   = 34 ,
+    BUADRATE_38_4K_16HZ_UX20   = 25 ,
+    BUADRATE_57_6K_16HZ_UX20   = 16 ,
 
 }USART_BR_OPTION;
 
- 
-// #define BUADRATE_9600_8HZ_UX20      51
-// #define BUADRATE_14_4K_8HZ_UX20     34
-// #define BUADRATE_19_2K_8HZ_UX20     25
 
-// #define BUADRATE_4800_16HZ_UX20      207
-// #define BUADRATE_9600_16HZ_UX20      103
-// #define BUADRATE_14_4K_16HZ_UX20     68
-// #define BUADRATE_19_2K_16HZ_UX20     51
 
 #if ((USART_CURRENT_MODE == USART_Asynchronous_Normal_Speed) || (USART_CURRENT_MODE == USART_Asynchronous_Double_Speed))
 

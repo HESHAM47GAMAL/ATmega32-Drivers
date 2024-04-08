@@ -31,6 +31,8 @@
 #define UDRE               5
 #define U2X                1
 
+#define RXCIE              7
+
 
 #define RXEN               4
 #define TXEN               3

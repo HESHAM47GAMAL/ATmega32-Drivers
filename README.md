@@ -13,7 +13,7 @@
   - [ULTRASONIC](#ULTRASONIC)
   - [Button](#Button)
   - [EXT-EEPROM](#EXT-EEPROM)
-  - [Infrared-Remote-ontrol](#Infrared-Remote-ontrol)
+  - [Infrared-Remote-Control](#Infrared-Remote-Control)
 - [MCAL](#MCAL)
   - [GPIO](#GPIO)
   - [EXT-INT](#EXT-INT)
