@@ -13,6 +13,7 @@
 /**************************                   INCLUDES                   **************************/
 #include "ULTRASONIC_config.h"
 #include "ULTRASONIC_interface.h"
+#include "ULTRASONIC_private.h"
 
 #include "../../MCAL/TIMER1/TIMER1_interface.h"
 #include "../../MCAL/GPIO/GPIO_interface.h"
