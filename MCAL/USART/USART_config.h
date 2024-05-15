@@ -30,7 +30,7 @@
 #define Enable_Interrupt_USART                1        //  Option 1 -----------|
 #define Disable_Interrupt_USART               0        //  Option 2 -----------|
 //                                                                             |
-#define INTERUPT_STATE_USART          Enable_Interrupt_USART    //<------------|
+#define INTERUPT_STATE_USART          Disable_Interrupt_USART    //<------------|
 
 typedef enum 
 {

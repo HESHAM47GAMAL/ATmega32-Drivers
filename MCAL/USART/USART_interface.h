@@ -112,4 +112,8 @@ void USART_EnableReceiveInerrupt(void);
 */
 uint16 USART_Catch_UDR_Value(void);
 
+
+
+boolean UART_receiveByteUnblocking(uint8 * Data);
+
 #endif

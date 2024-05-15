@@ -226,3 +226,18 @@ uint16 USART_Catch_UDR_Value(void)
     Returned_value |= UDR ;
     return Returned_value;
 }
+
+
+
+boolean UART_receiveByteUnblocking(uint8 * Data)
+{
+    boolean result = FALSE;
+	if ( UCSRA & (1<<RXC) ){
+		(*Data) = UDR;
+		result =  TRUE;		
+	}
+	else{
+		result = FALSE;
+	}
+	return result;
+}
